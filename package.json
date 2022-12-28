@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/CengAmat/Node-Zone/issues"
   },
-  "homepage": "https://github.com/CengAmat/Node-Zone#readme"
+  "homepage": "https://github.com/CengAmat/Node-Zone#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
 }
