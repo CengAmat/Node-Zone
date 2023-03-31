@@ -8,9 +8,6 @@ exports.getProducts = (req, res, next) => {
         prods: rows,
         pageTitle: "All Products",
         path: "/products",
-        hasProducts: rows.length > 0,
-        activeShop: true,
-        productCSS: true,
       });
     })
     .catch((err) => console.log(err));
