@@ -1,5 +1,5 @@
 const Cart = require("../models/cart");
-const Product = require("../models/product_db");
+const Product = require("../models/product");
 
 exports.getProducts = (req, res, next) => {
   Product.fetchAll()
