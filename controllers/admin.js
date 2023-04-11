@@ -46,24 +46,24 @@ exports.getEditProduct = (req, res, next) => {
     });
 };
 
-// exports.postEditProduct = (req, res, next) => {
-//   const productId = req.body.productId;
-//   const { title, price, imageUrl, description } = req.body;
+exports.postEditProduct = (req, res, next) => {
+  const productId = req.body.productId;
+  const { title, price, imageUrl, description } = req.body;
 
-//   Product.findByPk(productId)
-//     .then((product) => {
-//       product.title = title;
-//       product.price = price;
-//       product.imageUrl = imageUrl;
-//       product.description = description;
-//       return product.save();
-//     })
-//     .then((result) => {
-//       console.log("UPDATED PRODUCT!");
-//       res.redirect("/admin/products");
-//     })
-//     .catch((err) => console.log(err));
-// };
+  Product.findById(productId)
+    .then((product) => {
+      product.title = title;
+      product.price = price;
+      product.imageUrl = imageUrl;
+      product.description = description;
+      return product.save();
+    })
+    .then((result) => {
+      console.log("UPDATED PRODUCT!");
+      res.redirect("/admin/products");
+    })
+    .catch((err) => console.log(err));
+};
 
 // exports.postDeleteProduct = (req, res, next) => {
 //   const productId = req.body.productId;
