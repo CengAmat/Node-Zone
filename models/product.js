@@ -1,4 +1,4 @@
-const { getDb } = require("../util/database");
+const getDb = require("../util/database").getDb;
 const mongodb = require("mongodb");
 
 class Product {
@@ -7,7 +7,7 @@ class Product {
     this.price = price;
     this.description = description;
     this.imageUrl = imageUrl;
-    this._id = id;
+    this._id = id ? new mongodb.ObjectId(id) : null;
   }
 
   save() {
@@ -15,10 +15,12 @@ class Product {
     let dbOp;
     if (this._id) {
       // Update the product
+      console.log("Here I am");
       dbOp = db
         .collection("products")
-        .updateOne({ _id: new mongodb.ObjectId(this._id) }, { $set: this });
+        .updateOne({ _id: this._id }, { $set: this });
     } else {
+      console.log("Here I am for insert");
       dbOp = db.collection("products").insertOne(this);
     }
     return dbOp
