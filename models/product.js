@@ -69,10 +69,20 @@ class Product {
       .collection("products")
       .deleteOne({ _id: new mongodb.ObjectId(productId) })
       .then((result) => {
-        console.log(result);
+        return db.collection("users").updateMany(
+          {},
+          {
+            $pull: {
+              "cart.items": { productId: new mongodb.ObjectId(productId) },
+            },
+          }
+        );
       })
-      .catch((err) => {
-        console.log(err);
+      .then((result) => {
+        console.log("Cart Item Deleted");
+      })
+      .then(() => {
+        console.log("Product Deleted");
       });
   }
 }
