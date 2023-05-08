@@ -67,6 +67,17 @@ exports.postSignup = (req, res, next) => {
         req.flash("error", "Email already exists!");
         return res.redirect("/signup");
       }
+      if (password.length < 5) {
+        req.flash(
+          "error",
+          "Your password needs to be at least 5 characters long"
+        );
+        return res.redirect("/signup");
+      }
+      if (password !== confirmPassword) {
+        req.flash("error", "Passwords do NOT match!");
+        return res.redirect("/signup");
+      }
       return bcrypt
         .hash(password, 12)
         .then((hashedPassword) => {
