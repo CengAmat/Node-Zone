@@ -241,6 +241,10 @@ form {
   color: red;
 }
 
+.link {
+  color: #722cbe;
+}
+
 @media (min-width: 768px) {
   .main-header__nav {
     display: flex;
