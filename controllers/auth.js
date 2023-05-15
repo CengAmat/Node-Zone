@@ -97,10 +97,6 @@ exports.postSignup = (req, res, next) => {
         );
         return res.redirect("/signup");
       }
-      if (password !== confirmPassword) {
-        req.flash("error", "Passwords do NOT match!");
-        return res.redirect("/signup");
-      }
       return bcrypt
         .hash(password, 12)
         .then((hashedPassword) => {
