@@ -10,8 +10,7 @@ const user = require("../models/user");
 const transporter = nodemailer.createTransport(
   sendgridTransport({
     auth: {
-      api_key:
-        "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",
+      api_key: "",
     },
   })
 );
@@ -74,7 +73,7 @@ exports.postLogin = (req, res, next) => {
 };
 
 exports.postSignup = (req, res, next) => {
-  const { email, password, confirmPassword } = req.body;
+  const { email, password } = req.body;
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     console.log(errors.array());
@@ -88,13 +87,6 @@ exports.postSignup = (req, res, next) => {
     .then((userDoc) => {
       if (userDoc) {
         req.flash("error", "Email already exists!");
-        return res.redirect("/signup");
-      }
-      if (password.length < 5) {
-        req.flash(
-          "error",
-          "Your password needs to be at least 5 characters long"
-        );
         return res.redirect("/signup");
       }
       return bcrypt
