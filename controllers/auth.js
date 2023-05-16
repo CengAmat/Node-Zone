@@ -5,11 +5,12 @@ const sendgridTransport = require("nodemailer-sendgrid-transport");
 const { validationResult } = require("express-validator");
 
 const User = require("../models/user");
+const sendgridApiKey = require("../api/sendgrid");
 
 const transporter = nodemailer.createTransport(
   sendgridTransport({
     auth: {
-      api_key: "",
+      api_key: sendgridApiKey,
     },
   })
 );
@@ -69,8 +70,13 @@ exports.postLogin = (req, res, next) => {
   User.findOne({ email: email })
     .then((user) => {
       if (!user) {
-        req.flash("error", "Invalid email or password!");
-        return res.redirect("/login");
+        return res.status(422).render("auth/login", {
+          path: "/login",
+          pageTitle: "login",
+          errorMessage: errors.array()[0].msg,
+          oldInput: { email: email, password: password },
+          validationErrors: errors.array(),
+        });
       }
       bcrypt
         .compare(password, user.password)
@@ -83,7 +89,13 @@ exports.postLogin = (req, res, next) => {
               res.redirect("/");
             });
           }
-          res.redirect("/login");
+          return res.status(422).render("auth/login", {
+            path: "/login",
+            pageTitle: "login",
+            errorMessage: errors.array()[0].msg,
+            oldInput: { email: email, password: password },
+            validationErrors: errors.array(),
+          });
         })
         .catch((err) => {
           console.log(err);
