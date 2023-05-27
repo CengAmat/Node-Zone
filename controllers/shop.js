@@ -4,6 +4,7 @@ const PDFDocument = require("pdfkit");
 
 const Product = require("../models/product");
 const Order = require("../models/order");
+const product = require("../models/product");
 
 exports.getProducts = (req, res, next) => {
   Product.find()
@@ -169,7 +170,27 @@ exports.getInvoice = (req, res, next) => {
       pdfDoc.pipe(fs.createWriteStream(invoicePath));
       pdfDoc.pipe(res);
 
-      pdfDoc.text("Hello World");
+      pdfDoc.fontSize(26).text("Invoice", {
+        underline: true,
+      });
+      pdfDoc.text("-------------------------------------");
+      let totalPrice = 0;
+      order.products.forEach((product) => {
+        totalPrice += product.quantity * product.product.price;
+        pdfDoc
+          .fontSize(14)
+          .text(
+            product.product.title +
+              " - " +
+              product.quantity +
+              " x " +
+              "£" +
+              product.product.price
+          );
+      });
+      pdfDoc.text("-----");
+      pdfDoc.fontSize(20).text("Total Price: £" + totalPrice);
+
       pdfDoc.end();
       // fs.readFile(invoicePath, (err, data) => {
       //   if (err) {
